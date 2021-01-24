@@ -1,6 +1,7 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
 import lib.ui.factories.ArticlePageObjectFactory;
@@ -35,12 +36,16 @@ public class ArticleTests extends CoreTestCase
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
-//        SearchPageObject.typeSearchLine("Appium");
+        SearchPageObject.typeSearchLine("Appium");
         SearchPageObject.clickByArticleWithSubstring("Appium");
 
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
 
-        ArticlePageObject.waitForTitleElement();
+        if(Platform.getInstance().isAndroid()){
+            ArticlePageObject.waitForTitleElement();
+        } else {
+            ArticlePageObject.waitForTitleElementIOs("Appium");
+        }
         ArticlePageObject.swipeToFooter();
     }
 

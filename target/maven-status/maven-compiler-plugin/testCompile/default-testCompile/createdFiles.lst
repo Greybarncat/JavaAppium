@@ -1,4 +1,5 @@
 tests/ArticleTests.class
+suites/TestSuite.class
 lib/ui/NavigationUI.class
 tests/SearchTests.class
 lib/ui/ArticlePageObject.class

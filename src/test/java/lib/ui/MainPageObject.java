@@ -80,6 +80,17 @@ public class MainPageObject
         );
     }
 
+    protected void assertElementHasName(String locator,String expected_name, String error_message, long timeoutInSeconds)
+    {
+        WebElement element = waitForElementPresent(locator, error_message, timeoutInSeconds);
+        String element_name = element.getAttribute("name");
+        Assert.assertEquals(
+                error_message+"with name \""+expected_name+"\"",
+                expected_name,
+                element_name
+        );
+    }
+
     protected void assertElementHasText(String locator,String expected_text, String error_message)
     {
         assertElementHasText(locator,expected_text,error_message, 5);

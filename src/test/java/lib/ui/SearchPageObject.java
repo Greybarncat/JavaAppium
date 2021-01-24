@@ -2,6 +2,7 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import org.junit.Assert;
+import lib.Platform;
 import org.openqa.selenium.WebElement;
 
 import java.util.ArrayList;
@@ -17,7 +18,8 @@ abstract public class SearchPageObject extends MainPageObject {
             SEARCH_EMPTY_RESULT_LABEL,
             SEARCH_RESULT_BY_TITLE_AND_DESCRIPTION_TPL,
             SEARCH_INPUT_FIELD,
-            SEARCH_RESULT_TITLE;
+            SEARCH_RESULT_TITLE,
+            SEARCH_CLEAR_BUTTON;
 
     public SearchPageObject(AppiumDriver driver)
     {
@@ -57,6 +59,11 @@ abstract public class SearchPageObject extends MainPageObject {
     public void clickCancelSearch()
     {
         this.waitForElementAndClick(SEARCH_CANCEL_BUTTON, "Cannot find and click search cancel button", 5);
+    }
+
+    public void clickClearSearchButton()
+    {
+        this.waitForElementAndClick(SEARCH_CLEAR_BUTTON, "Cannot find and click clear search button", 5);
     }
 
     public void typeSearchLine(String search_line)
@@ -100,7 +107,11 @@ abstract public class SearchPageObject extends MainPageObject {
 
     public void assertSearchInputHasText(String text)
     {
-        this.assertElementHasText(SEARCH_INPUT_FIELD, text, "We supposed search line has text " + text);
+        if (Platform.getInstance().isAndroid()){
+            this.assertElementHasText(SEARCH_INPUT_FIELD, text, "We supposed search line has text " + text);
+        } else {
+            this.assertElementHasName(SEARCH_INPUT, text, "We supposed search line has text " + text, 5);
+        }
     }
 
     public void assertAllSearchResultContainsText(String text)

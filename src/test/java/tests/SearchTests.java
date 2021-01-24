@@ -67,7 +67,11 @@ public class SearchTests extends CoreTestCase
 
         assertTrue("We found less than 2 search results by " +search_line,amount_of_search_results>=2);
 
-        SearchPageObject.clickCancelSearch();
+        if(Platform.getInstance().isAndroid()){
+            SearchPageObject.clickCancelSearch();
+        } else {
+            SearchPageObject.clickClearSearchButton();
+        }
         SearchPageObject.assertThereIsNoResultOfSearch();
     }
 
@@ -93,12 +97,17 @@ public class SearchTests extends CoreTestCase
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
-        SearchPageObject.assertSearchInputHasText("Search…");
+        if (Platform.getInstance().isAndroid()){
+            SearchPageObject.assertSearchInputHasText("Search…");
+        } else {
+            SearchPageObject.assertSearchInputHasText("Search Wikipedia");
+        }
     }
 
     @Test
     public void testCorrectSearchResults()
     {
+        if (Platform.getInstance().isIOs()) return;
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
