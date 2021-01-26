@@ -4,6 +4,7 @@ import io.appium.java_client.AppiumDriver;
 import org.junit.Assert;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 import java.util.ArrayList;
 
@@ -21,7 +22,7 @@ abstract public class SearchPageObject extends MainPageObject {
             SEARCH_RESULT_TITLE,
             SEARCH_CLEAR_BUTTON;
 
-    public SearchPageObject(AppiumDriver driver)
+    public SearchPageObject(RemoteWebDriver driver)
     {
         super(driver);
     }

@@ -2,6 +2,7 @@ package lib.ui.ios;
 
 import io.appium.java_client.AppiumDriver;
 import lib.ui.SearchPageObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class IOsSearchPageObject extends SearchPageObject
 {
@@ -18,7 +19,7 @@ public class IOsSearchPageObject extends SearchPageObject
         SEARCH_CLEAR_BUTTON = "id:Clear text";
     }
 
-    public IOsSearchPageObject (AppiumDriver driver)
+    public IOsSearchPageObject (RemoteWebDriver driver)
     {
         super(driver);
     }

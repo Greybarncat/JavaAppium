@@ -5,10 +5,11 @@ import lib.Platform;
 import lib.ui.MyListsPageObject;
 import lib.ui.android.AndroidMyListsObject;
 import lib.ui.ios.IOsMyListsObject;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class MyListsObjectFactory
 {
-    public static MyListsPageObject get(AppiumDriver driver)
+    public static MyListsPageObject get(RemoteWebDriver driver)
     {
         if (Platform.getInstance().isAndroid()){
             return new AndroidMyListsObject(driver);
