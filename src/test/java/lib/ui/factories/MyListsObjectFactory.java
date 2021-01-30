@@ -1,10 +1,10 @@
 package lib.ui.factories;
 
-import io.appium.java_client.AppiumDriver;
 import lib.Platform;
 import lib.ui.MyListsPageObject;
 import lib.ui.android.AndroidMyListsObject;
-import lib.ui.ios.IOsMyListsObject;
+import lib.ui.ios.IOsMyListsPageObject;
+import lib.ui.mobile_web.MWMyListsPageObject;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
 public class MyListsObjectFactory
@@ -13,8 +13,10 @@ public class MyListsObjectFactory
     {
         if (Platform.getInstance().isAndroid()){
             return new AndroidMyListsObject(driver);
+        } else if (Platform.getInstance().isIOs()){
+            return new IOsMyListsPageObject(driver);
         } else {
-            return new IOsMyListsObject(driver);
+            return new MWMyListsPageObject(driver);
         }
     }
 }

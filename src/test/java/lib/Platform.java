@@ -80,6 +80,7 @@ public class Platform
         capabilities.setCapability("deviceName","iPhone 8");
         capabilities.setCapability("platformVersion","13.7");
         capabilities.setCapability("app","Users/akraynov/Documents/GitHub/JavaAppiumAutomation/apks/Wikipedia.app");
+        capabilities.setCapability("automationName","XCUITest");
         return capabilities;
     }
 

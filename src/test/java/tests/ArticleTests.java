@@ -36,15 +36,15 @@ public class ArticleTests extends CoreTestCase
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Appium");
-        SearchPageObject.clickByArticleWithSubstring("Appium");
+        SearchPageObject.typeSearchLine("Java");
+        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
 
-        if(Platform.getInstance().isAndroid()){
+        if(Platform.getInstance().isAndroid() || Platform.getInstance().isMW()){
             ArticlePageObject.waitForTitleElement();
         } else {
-            ArticlePageObject.waitForTitleElementIOs("Appium");
+            ArticlePageObject.waitForTitleElementIOs("Java");
         }
         ArticlePageObject.swipeToFooter();
     }

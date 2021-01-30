@@ -2,10 +2,7 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.Platform;
-import lib.ui.ArticlePageObject;
-import lib.ui.MyListsPageObject;
-import lib.ui.NavigationUI;
-import lib.ui.SearchPageObject;
+import lib.ui.*;
 import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.MyListsObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
@@ -14,7 +11,10 @@ import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase
 {
-    private static final String name_of_folder = "Learning programming";
+    private static final String
+            name_of_folder = "Learning programming",
+            login = "GreyBarnCat",
+            password = "Hellgate65";
 
     @Test
     public void testSafeFirstArticleToMyList()
@@ -27,9 +27,25 @@ public class MyListsTests extends CoreTestCase
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
         String article_title = ArticlePageObject.getArticleTitle();
+        try {Thread.sleep(3000);} catch (Exception e) {}
         if (Platform.getInstance().isAndroid()) {
             ArticlePageObject.addArticleToMyList(name_of_folder);
         } else {
+            ArticlePageObject.addArticleToMySaved();
+        }
+        if (Platform.getInstance().isMW()){
+            AuthorizationPageObject AuthorizationPageObject = new AuthorizationPageObject(driver);
+            try {Thread.sleep(3000);} catch (Exception e) {}
+            AuthorizationPageObject.clickAuthButton();
+            try {Thread.sleep(3000);} catch (Exception e) {}
+            AuthorizationPageObject.enterLoginData(login, password);
+            AuthorizationPageObject.submitForm();
+            ArticlePageObject.waitForTitleElement();
+            assertEquals(
+                    "We are not on the same page after login",
+                    article_title,
+                    ArticlePageObject.getArticleTitle()
+            );
             ArticlePageObject.addArticleToMySaved();
         }
         ArticlePageObject.closeArticle();
@@ -37,12 +53,13 @@ public class MyListsTests extends CoreTestCase
             SearchPageObject.clickCancelSearch();
         }
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
+        NavigationUI.openNavigation();
         NavigationUI.clickMyLists();
         MyListsPageObject MyListsPageObject = MyListsObjectFactory.get(driver);
         if (Platform.getInstance().isAndroid()) {
             try {Thread.sleep(3000);} catch (Exception e) {}
             MyListsPageObject.openFolderByName(name_of_folder);
-        } else {
+        } else if (Platform.getInstance().isIOs()){
             MyListsPageObject.clickSyncPopupCloseButton();
         }
         MyListsPageObject.swipeByArticleToDelete(article_title);

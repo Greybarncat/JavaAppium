@@ -12,6 +12,7 @@ abstract public class ArticlePageObject extends MainPageObject
             FOOTER_ELEMENT,
             OPTIONS_BUTTON,
             OPTIONS_ADD_TO_MY_LIST_BUTTON,
+            OPTIONS_REMOVE_FROM_MY_LIST_BUTTON,
             ADD_TO_MY_LIST_OVERLAY,
             MY_LIST_NAME_INPUT,
             MY_LIST_OK_BUTTON,
@@ -66,15 +67,21 @@ abstract public class ArticlePageObject extends MainPageObject
         WebElement title_element = waitForTitleElement();
         if(Platform.getInstance().isAndroid()) {
             return title_element.getAttribute("text");
-        } return title_element.getAttribute("name");
+        } else if (Platform.getInstance().isIOs()) {
+            return title_element.getAttribute("name");
+        } else {
+            return title_element.getText();
+        }
     }
 
     public void swipeToFooter()
     {
         if (Platform.getInstance().isAndroid()) {
             this.swipeUpToFindElement(FOOTER_ELEMENT, "Cannot find the end of article", 40);
-        } else {
+        } else if (Platform.getInstance().isIOs()){
             this.swipeUpTillElementAppear(FOOTER_ELEMENT, "Cannot find the end of article", 40);
+        } else {
+            this.scrollWebPageTillElementNotVisible(FOOTER_ELEMENT, "Cannot find the end of article", 40);
         }
     }
 
@@ -90,12 +97,28 @@ abstract public class ArticlePageObject extends MainPageObject
 
     public void addArticleToMySaved()
     {
+        if (Platform.getInstance().isMW()){
+            this.removeArticleFromSavedIfItAdded();
+        }
         this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find option to add article to reading list", 5);
+    }
+
+    public void removeArticleFromSavedIfItAdded ()
+    {
+        if (this.isElemementPresent(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON)){
+            this.waitForElementAndClick(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON, "Cannot click button to remove an article from saved", 1);
+            this.waitForElementPresent(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find button to add an article to saved list after removing it from this list before");
+        }
     }
 
     public void closeArticle()
     {
-        this.waitForElementAndClick(CLOSE_ARTICLE_BUTTON, "Cannot close article, cannot find X button", 5);
+        if (Platform.getInstance().isAndroid() || Platform.getInstance().isIOs()){
+            this.waitForElementAndClick(CLOSE_ARTICLE_BUTTON, "Cannot close article, cannot find X button", 5);
+        } else {
+            System.out.println("Method closeArticle() does nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
+
     }
 
     public void addArticleToMyListInExistFolder(String name_of_folder)

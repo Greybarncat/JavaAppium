@@ -8,6 +8,7 @@ import lib.Platform;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -122,6 +123,31 @@ public class MainPageObject
         swipeUp(200);
     }
 
+    public void scrollWebPageUp()
+    {
+        if (Platform.getInstance().isMW()){
+            JavascriptExecutor JSExecutor = (JavascriptExecutor) driver;
+            JSExecutor.executeScript("window.scrollBy(0, 250)");
+        } else {
+            System.out.println("Method scrollWebPageUp() does nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
+    }
+
+    public void scrollWebPageTillElementNotVisible(String locator, String error_message, int max_swipes)
+    {
+        int already_swiped = 0;
+
+        WebElement element = this.waitForElementPresent(locator,error_message);
+
+        while (!this.isElementLocatedOnTheScreen(locator)){
+            scrollWebPageUp();
+            ++already_swiped;
+            if (already_swiped>max_swipes){
+                Assert.assertTrue(error_message, element.isDisplayed());
+            }
+        }
+    }
+
     protected void swipeUpToFindElement (String locator, String error_message, int max_swipes)
     {
         By by = this.getLocatorByString(locator);
@@ -207,6 +233,28 @@ public class MainPageObject
         return elements.size();
     }
 
+    protected void tryToClickElementWithFewAttempts(String locator, String error_message, int amount_of_attempts)
+    {
+        int current_attempts = 0;
+        boolean need_more_attempts = true;
+        while (need_more_attempts) {
+            try {
+                this.waitForElementAndClick(locator, error_message, 1);
+                need_more_attempts = false;
+            } catch (Exception e) {
+                if (current_attempts>amount_of_attempts){
+                    this.waitForElementAndClick(locator, error_message, 1);
+                }
+            }
+            ++current_attempts;
+        }
+    }
+
+    protected boolean isElemementPresent(String locator)
+    {
+        return getAmountOfElements(locator)>0;
+    }
+
     protected void assertElementNotPresent (String locator, String error_message)
     {
         int amount_of_elements = getAmountOfElements(locator);
@@ -255,6 +303,11 @@ public class MainPageObject
     protected boolean isElementLocatedOnTheScreen(String locator)
     {
         int element_location_by_y = this.waitForElementPresent(locator, "Cannot find element by locator. Locator is "+locator, 10).getLocation().getY();
+        if (Platform.getInstance().isMW()){
+            JavascriptExecutor JSExecutor = (JavascriptExecutor) driver;
+            Object js_result = JSExecutor.executeScript("return window.pageYOffset");
+            element_location_by_y -= Integer.parseInt(js_result.toString());
+        }
         int screen_size_by_y = driver.manage().window().getSize().getHeight();
         return element_location_by_y < screen_size_by_y;
     }
