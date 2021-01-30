@@ -1,6 +1,5 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
 import lib.Platform;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -20,7 +19,8 @@ abstract public class ArticlePageObject extends MainPageObject
             MY_LIST_FOLDER_BY_NAME_TPL,
             TITLE_IOS_BY_NAME_TPL,
             CONTENTS_BUTTON,
-            CONTENTS_TITLE_BY_NAME_TPL;
+            CONTENTS_TITLE_BY_NAME_TPL,
+            SHORT_INFO_TITLE_TPL;
 
     /* TEMPLATE METHODS */
     private static String getMyListFolderXpathByName (String name_of_folder)
@@ -36,6 +36,11 @@ abstract public class ArticlePageObject extends MainPageObject
     private static String getContentsTitleLocatorByName(String name_of_article)
     {
         return CONTENTS_TITLE_BY_NAME_TPL.replace("{NAME}", name_of_article);
+    }
+
+    private static String getShortInfoLocatorByTitle(String title)
+    {
+        return SHORT_INFO_TITLE_TPL.replace("{TITLE}", title);
     }
     /* TEMPLATE METHODS */
 
@@ -74,6 +79,12 @@ abstract public class ArticlePageObject extends MainPageObject
         }
     }
 
+    public void waitForShortInfoWithTitle(String title)
+    {
+        String short_info_title_locator = getShortInfoLocatorByTitle(title);
+        this.waitForElementPresent(short_info_title_locator, "Cannot find short info with title "+title);
+    }
+
     public void swipeToFooter()
     {
         if (Platform.getInstance().isAndroid()) {
@@ -108,6 +119,7 @@ abstract public class ArticlePageObject extends MainPageObject
         if (this.isElemementPresent(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON)){
             this.waitForElementAndClick(OPTIONS_REMOVE_FROM_MY_LIST_BUTTON, "Cannot click button to remove an article from saved", 1);
             this.waitForElementPresent(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find button to add an article to saved list after removing it from this list before");
+            try {Thread.sleep(3000);} catch (Exception e) {}
         }
     }
 

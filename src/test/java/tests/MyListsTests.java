@@ -82,12 +82,31 @@ public class MyListsTests extends CoreTestCase
             ArticlePageObject.waitForTitleElement();
             first_article_title = ArticlePageObject.getArticleTitle();
             ArticlePageObject.addArticleToMyList(name_of_folder);
-        } else {
+            ArticlePageObject.closeArticle();
+        } else if (Platform.getInstance().isIOs()){
             ArticlePageObject.waitForTitleElementIOs(first_article_title);
             ArticlePageObject.addArticleToMySaved();
+            ArticlePageObject.closeArticle();
+        } else {
+            ArticlePageObject.waitForTitleElement();
+            first_article_title = ArticlePageObject.getArticleTitle();
+            try {Thread.sleep(3000);} catch (Exception e) {}
+            ArticlePageObject.addArticleToMySaved();
+            AuthorizationPageObject AuthorizationPageObject = new AuthorizationPageObject(driver);
+            try {Thread.sleep(3000);} catch (Exception e) {}
+            AuthorizationPageObject.clickAuthButton();
+            try {Thread.sleep(3000);} catch (Exception e) {}
+            AuthorizationPageObject.enterLoginData(login, password);
+            AuthorizationPageObject.submitForm();
+            ArticlePageObject.waitForTitleElement();
+            assertEquals(
+                    "We are not on the same page after login",
+                    first_article_title,
+                    ArticlePageObject.getArticleTitle()
+            );
+            ArticlePageObject.addArticleToMySaved();
         }
-        ArticlePageObject.closeArticle();
-        if (Platform.getInstance().isAndroid()){
+        if (Platform.getInstance().isAndroid() || Platform.getInstance().isMW()){
             SearchPageObject.initSearchInput();
         } else {
             SearchPageObject.clearSearchInput();
@@ -102,27 +121,33 @@ public class MyListsTests extends CoreTestCase
             ArticlePageObject.waitForTitleElement();
             second_article_title = ArticlePageObject.getArticleTitle();
             ArticlePageObject.addArticleToMyListInExistFolder(name_of_folder);
-        } else {
+            ArticlePageObject.closeArticle();
+        } else if(Platform.getInstance().isIOs()){
             ArticlePageObject.waitForTitleElementIOs(second_article_title);
             ArticlePageObject.addArticleToMySaved();
+            ArticlePageObject.closeArticle();
+        } else {
+            ArticlePageObject.waitForTitleElement();
+            second_article_title = ArticlePageObject.getArticleTitle();
+            ArticlePageObject.addArticleToMySaved();
         }
-        ArticlePageObject.closeArticle();
         if (Platform.getInstance().isIOs()){
             SearchPageObject.clickCancelSearch();
         }
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);
+        NavigationUI.openNavigation();
         NavigationUI.clickMyLists();
         MyListsPageObject MyListsPageObject = MyListsObjectFactory.get(driver);
         if (Platform.getInstance().isAndroid()){
             try {Thread.sleep(5000);} catch (Exception e){}
             MyListsPageObject.openFolderByName(name_of_folder);
-        } else {
+        } else if (Platform.getInstance().isIOs()){
             MyListsPageObject.clickSyncPopupCloseButton();
         }
         MyListsPageObject.swipeByArticleToDelete(second_article_title);
         MyListsPageObject.assertThereIsArticleWithTitle(first_article_title);
         MyListsPageObject.openArticleByTitle(first_article_title);
-        if(Platform.getInstance().isAndroid()){
+        if(Platform.getInstance().isAndroid() || Platform.getInstance().isMW()){
             ArticlePageObject.waitForTitleElement();
         } else {
             ArticlePageObject.waitForTitleElementIOs(first_article_title);
@@ -133,9 +158,11 @@ public class MyListsTests extends CoreTestCase
                     first_article_title,
                     ArticlePageObject.getArticleTitle()
             );
-        } else {
+        } else if (Platform.getInstance().isIOs()){
             ArticlePageObject.clickContentsButton();
             ArticlePageObject.waitForContentsTitleElement(first_article_title);
+        } else {
+            ArticlePageObject.waitForShortInfoWithTitle("Java Programming Language");
         }
     }
 }
