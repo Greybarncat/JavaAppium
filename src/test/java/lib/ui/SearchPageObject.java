@@ -67,6 +67,7 @@ abstract public class SearchPageObject extends MainPageObject {
         this.waitForElementAndClick(SEARCH_CANCEL_BUTTON, "Cannot find and click search cancel button", 5);
     }
 
+    @Step("Clicking button to clear search input")
     public void clickClearSearchButton()
     {
         this.waitForElementAndClick(SEARCH_CLEAR_BUTTON, "Cannot find and click clear search button", 5);
@@ -111,12 +112,14 @@ abstract public class SearchPageObject extends MainPageObject {
         this.assertElementNotPresent(SEARCH_RESULT_ELEMENT, "We supposed not to find any results");
     }
 
-    public void waitForElementByTitleAndDiscription(String title, String description)
+    @Step("Check result's title and description")
+    public void waitForElementByTitleAndDescription(String title, String description)
     {
         String search_result_xpath = getSearchResultByTitleAndDescription(title, description);
         this.waitForElementPresent(search_result_xpath, "Cannot find search result with title " + title + " and description " + description, 10);
     }
 
+    @Step("Making sure search input has '{text}' text")
     public void assertSearchInputHasText(String text)
     {
         if (Platform.getInstance().isAndroid()){
@@ -126,6 +129,7 @@ abstract public class SearchPageObject extends MainPageObject {
         }
     }
 
+    @Step("Check all results contains '{text}'")
     public void assertAllSearchResultContainsText(String text)
     {
         this.waitForElementPresent(SEARCH_RESULT_TITLE, "Cannot find search result", 10);
@@ -138,6 +142,7 @@ abstract public class SearchPageObject extends MainPageObject {
         }
     }
 
+    @Step("Clear search line")
     public void clearSearchInput()
     {
         this.waitForElementAndClear(SEARCH_INPUT, "Cannot find and clear search input", 5);

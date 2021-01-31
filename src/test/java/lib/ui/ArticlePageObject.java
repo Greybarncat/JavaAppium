@@ -57,12 +57,14 @@ abstract public class ArticlePageObject extends MainPageObject
         return this.waitForElementPresent(TITLE, "Cannot find article title on page", 15);
     }
 
+    @Step("Waiting for title on the article page with {name} name")
     public WebElement waitForTitleElementIOs(String name)
     {
         String title_locator = getTitleIOsLocatorByName(name);
         return this.waitForElementPresent(title_locator, "Cannot find article title on page", 15);
     }
 
+    @Step("Waiting for contents title on the article page")
     public WebElement waitForContentsTitleElement(String name)
     {
         String contents_title_locator = getContentsTitleLocatorByName(name);
@@ -83,6 +85,7 @@ abstract public class ArticlePageObject extends MainPageObject
         }
     }
 
+    @Step("Waiting for short info title on the article page")
     public void waitForShortInfoWithTitle(String title)
     {
         String short_info_title_locator = getShortInfoLocatorByTitle(title);
@@ -142,6 +145,7 @@ abstract public class ArticlePageObject extends MainPageObject
 
     }
 
+    @Step("Adding article in exist folder")
     public void addArticleToMyListInExistFolder(String name_of_folder)
     {
         this.waitForElementAndClick(OPTIONS_BUTTON, "Cannot find button to open article options", 5);
@@ -150,11 +154,13 @@ abstract public class ArticlePageObject extends MainPageObject
         this.waitForElementAndClick(folder_xpath, "Cannot find created folder by name "+ name_of_folder +" to save article", 5);
     }
 
+    @Step("Checking article title without waiting")
     public void assertThereIsArticleTitle()
     {
         this.assertElementPresent(TITLE, "Cannot find article title without waiting");
     }
 
+    @Step("Clicking contents button")
     public void clickContentsButton()
     {
         this.waitForElementAndClick(CONTENTS_BUTTON, "Cannot find and click contents button", 5);

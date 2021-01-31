@@ -66,6 +66,11 @@ public class ArticleTests extends CoreTestCase
     }
 
     @Test
+    @Features(value = {@Feature(value = "Search"), @Feature(value = "Article")})
+    @DisplayName("Check article title without waiting")
+    @Description("We open article and check title without waiting")
+    @Step("Starting test testAssertTitleWithoutWaiting")
+    @Severity(value = SeverityLevel.TRIVIAL)
     public void testAssertTitleWithoutWaiting()
     {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);

@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import io.qameta.allure.Step;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -33,24 +34,28 @@ abstract public class MyListsPageObject extends MainPageObject
         super(driver);
     }
 
+    @Step("Open folder with {name_of_folder} name")
     public void openFolderByName(String name_of_folder)
     {
         String folder_name_xpath = getFolderXpathByName(name_of_folder);
         this.waitForElementAndClick(folder_name_xpath, "Cannot find created folder ", 5);
     }
 
+    @Step("Wait article with '{article_title}' title")
     public void waitForArticleToAppearByTitle (String article_title)
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.waitForElementPresent(article_xpath, "Cannot find saved article with title "+article_title, 15);
     }
 
+    @Step("Wait article with '{article_title}' title to disappear")
     public void waitForArticleToDisappearByTitle (String article_title)
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.waitForElementNotPresent(article_xpath, "Saved Article still present with title "+article_title, 15);
     }
 
+    @Step("Delete '{article_title}' from my list")
     public void swipeByArticleToDelete(String article_title)
     {
         waitForArticleToAppearByTitle(article_title);
@@ -70,18 +75,21 @@ abstract public class MyListsPageObject extends MainPageObject
         waitForArticleToDisappearByTitle(article_title);
     }
 
+    @Step("Check no article '{article_title}' in my list")
     public void assertThereIsArticleWithTitle(String article_title)
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.assertElementPresent(article_xpath, "We supposed to find article with title " + article_title + " in my lists folder");
     }
 
+    @Step("Open '{article_title}' article")
     public void openArticleByTitle(String article_title)
     {
         String article_xpath = getSavedArticleXpathByTitle(article_title);
         this.waitForElementAndClick(article_xpath, "Cannot find and open saved article with title " + article_title, 5);
     }
 
+    @Step("Close sync popup")
     public void clickSyncPopupCloseButton()
     {
         this.waitForElementAndClick(SYNC_POPUP_CLOSE_BUTTON, "Cannot find and click x button on sync popup", 5);

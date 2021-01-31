@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.junit4.DisplayName;
 import lib.CoreTestCase;
 import lib.Platform;
 import lib.ui.*;
@@ -10,6 +12,7 @@ import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Assert;
 import org.junit.Test;
 
+@Epic("Tests for My list")
 public class MyListsTests extends CoreTestCase
 {
     private static final String
@@ -18,6 +21,11 @@ public class MyListsTests extends CoreTestCase
             password = "Hellgate65";
 
     @Test
+    @Features(value = {@Feature(value = "Search"), @Feature(value = "Adding My list"), @Feature(value = "Article")})
+    @DisplayName("Adding 1 article to my list")
+    @Description("We add article to my list and open it through My list page")
+    @Step("Starting test testSafeFirstArticleToMyList")
+    @Severity(value = SeverityLevel.CRITICAL)
     public void testSafeFirstArticleToMyList()
     {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
@@ -67,6 +75,11 @@ public class MyListsTests extends CoreTestCase
     }
 
     @Test
+    @Features(value = {@Feature(value = "Search"), @Feature(value = "Adding My list"), @Feature(value = "Removing My list"), @Feature(value = "Article")})
+    @DisplayName("Adding 2 article to my list")
+    @Description("We add 2 articles to my list, then remove one and open second through My list page")
+    @Step("Starting test testSaving2Articles")
+    @Severity(value = SeverityLevel.NORMAL)
     public void testSaving2Articles()
     {
         String first_article_title = "Java (programming language)";
