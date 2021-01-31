@@ -93,7 +93,7 @@ abstract public class ArticlePageObject extends MainPageObject
     public void swipeToFooter()
     {
         if (Platform.getInstance().isAndroid()) {
-            this.swipeUpToFindElement(FOOTER_ELEMENT, "Cannot find the end of article", 40);
+            this.swipeUpToFindElement(FOOTER_ELEMENT, "Cannot find the end of article", 150);
         } else if (Platform.getInstance().isIOs()){
             this.swipeUpTillElementAppear(FOOTER_ELEMENT, "Cannot find the end of article", 40);
         } else {

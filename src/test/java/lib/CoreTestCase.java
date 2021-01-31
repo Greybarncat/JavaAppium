@@ -99,8 +99,8 @@ public class CoreTestCase
         String path = System.getProperty("allure.results.directory");
         try {
             Properties props = new Properties();
-            FileOutputStream fos = new FileOutputStream(path + "/enviroment.properties");
-            props.setProperty("Enviroment", Platform.getInstance().getPlatformVar());
+            FileOutputStream fos = new FileOutputStream(path + "/environment.properties");
+            props.setProperty("Environment", Platform.getInstance().getPlatformVar());
             props.store(fos,"See https://github.com/allure-framework/allure-app/wiki/Enviroment");
             fos.close();
         } catch (Exception e) {
